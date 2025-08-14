@@ -39,9 +39,13 @@ matrix2
 
 ```{r}
 force <- function(mass, acceleration) {
-  result <- paste("The resulting force is", mass * acceleration, "Newtons")
+  if (!is.numeric(mass) | !is.numeric(acceleration)) {
+    stop("Isaac Newton uses numbers when doing math, you should too")
+  } else {
+    result <- paste("The resulting force is", mass * acceleration, "Newtons")
   
   return(result)
+  }
 }
 force(2, 4)
 ```
@@ -61,6 +65,12 @@ fish_parms <- data.frame(sci_name, common_name, a_est, b_est)
 ```{r}
 # create function, need conditions
 fish_weight <- function(fish_name, tot_length) {
+  if (!fish_name %in% fish_parms$common_name) {
+    stop("You had three fish to choose, that's not one of them")
+  }
+  if (tot_length < 0) {
+    stop("Your fish is made of anti-matter, try again")
+  }
   if (fish_name == "Milkfish") {
     weight <- 0.0905 * tot_length^2.52
   }else if (fish_name == "Great Barracuda") {
@@ -71,7 +81,7 @@ fish_weight <- function(fish_name, tot_length) {
   return(weight)
 }
 
-fish_weight("Giant Trevally", 21)
+fish_weight("Giant Trevally", 5)
 
 # vec of lengths
 milk_lengths <- seq(from = 0, to = 100, by = 1)
