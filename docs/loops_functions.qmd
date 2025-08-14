@@ -1,0 +1,123 @@
+---
+title: "loops_functions"
+author: "zachyloo"
+format: html
+editor: visual
+---
+
+# Loops revisited
+## Task 1
+```{r}
+weekdays <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+
+transects <- c("Transect A", "Transect B", "Transect C")
+
+matrix <- matrix(nrow = length(weekdays), ncol = length(transects))
+
+for (i in 1:length(weekdays)) {
+  for (t in 1:length(transects)) { # transects will iterate first, "going across"
+    
+    matrix[i, t] <- paste(weekdays[i], "-", transects[t])
+  }
+}
+
+matrix
+
+# iterate over columns instead
+matrix2 <- matrix(nrow = length(weekdays), ncol = length(transects))
+
+for (t in 1:length(transects)) {
+  for (i in 1:length(weekdays)) { # weekdays will iterate first, "going down"
+    
+    matrix2[i, t] <- paste(weekdays[i], "-", transects[t])
+  }
+}
+matrix2
+```
+
+## Task 2
+
+```{r}
+force <- function(mass, acceleration) {
+  result <- paste("The resulting force is", mass * acceleration, "Newtons")
+  
+  return(result)
+}
+force(2, 4)
+```
+
+## Task 3
+
+```{r}
+# create col vecs
+sci_name <- c("Chanos chanos", "Sphyraena barracuda", "Caranx ignobilis")
+common_name <- c("Milkfish", "Great Barracuda", "Giant Trevally")
+a_est <- c(0.0905, 0.0181, 0.0353)
+b_est <- c(2.52, 3.27, 3.05)
+# create df
+fish_parms <- data.frame(sci_name, common_name, a_est, b_est)
+```
+
+```{r}
+# create function, need conditions
+fish_weight <- function(fish_name, tot_length) {
+  if (fish_name == "Milkfish") {
+    weight <- 0.0905 * tot_length^2.52
+  }else if (fish_name == "Great Barracuda") {
+    weight <- 0.0181 * tot_length^3.27
+  } else {
+    weight <- 0.0353 * tot_length^3.05
+  }
+  return(weight)
+}
+
+fish_weight("Giant Trevally", 21)
+
+# vec of lengths
+milk_lengths <- seq(from = 0, to = 100, by = 1)
+# plug into fishweights function for range of lengths
+milk_weights <- fish_weight("Milkfish", milk_lengths)
+```
+
+## Task 4
+
+```{r}
+wave_power <- function(height, period) {
+  power_result <- (0.5 * height^2) * period
+  
+  return(power_result)
+}
+
+wave_range <- seq(from = 0, to = 3, by = 0.2)
+
+wave_power(4, 8)
+```
+
+## Task 5
+
+```{r}
+wave_power_x <- function(depth, height, period) {
+  if (depth <= 0 | height <= 0 | period <= 0) {
+    stop("How any of your inputs gonna get waves??? Surf up bru")
+  }
+  if (!is.numeric(depth) || !is.numeric(height) || !is.numeric(period)) {
+    stop("brah, enter numbers please")
+    # previous conditional if (is.numeric(depth) | is.numeric(period) | is.numeric(period) == FALSE)
+  }
+  if (depth > 12) {
+    power <- (0.5 * height^2) * period
+    message("Deep-water equation was used!")
+    
+    return(paste("Power:", power))
+  } else if (depth <= 12) {
+    power <- (0.81 * height^2) * period
+    message("Shallow-water equation was used!")
+    
+    return(paste("Power:", power))
+  }
+}
+
+wave_power_x(100, 100, 100)
+
+```
+
